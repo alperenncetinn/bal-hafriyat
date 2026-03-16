@@ -130,8 +130,9 @@ body::after {
     max-width: 850px;
     text-align: center;
     opacity: 0;
-    transform: translateY(50px) scale(0.97);
-    transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    filter: blur(10px);
+    transform: translateY(80px) scale(0.9);
+    transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.15);
 }
 
 .glass-panel:hover {
@@ -141,6 +142,7 @@ body::after {
 
 .glass-panel.visible {
     opacity: 1;
+    filter: blur(0);
     transform: translateY(0) scale(1);
 }
 
@@ -362,6 +364,12 @@ p strong {
     .overlay-section {
         height: 120vh;
         padding: 1rem;
+    }
+
+    .overlay-section.first-section {
+        height: 100dvh;
+        /* Centered nicely on modern mobile browsers */
+        align-items: center;
     }
 
     .action-button {
