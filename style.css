@@ -17,6 +17,20 @@ html {
     text-rendering: optimizeLegibility;
 }
 
+/* Vignette Overlay for Depth */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Above canvas, below sections */
+    background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.85) 100%);
+    pointer-events: none;
+}
+
 /* Loading Screen */
 #loading {
     position: fixed;
@@ -24,15 +38,38 @@ html {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #000;
-    color: #f39c12;
+    background: #050505;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 2px;
     z-index: 9999;
-    transition: opacity 0.5s ease-out;
+    transition: opacity 0.8s ease-out, visibility 0.8s;
+}
+
+#loading::after {
+    content: "BAL HAFRİYAT";
+    background: linear-gradient(135deg, #f1c40f 0%, #e67e22 50%, #d35400 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulsing-logo 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+@keyframes pulsing-logo {
+    0% {
+        filter: drop-shadow(0 0 5px rgba(230, 126, 34, 0.2));
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    100% {
+        filter: drop-shadow(0 0 25px rgba(230, 126, 34, 0.7));
+        transform: scale(1.05);
+        opacity: 1;
+    }
 }
 
 /* Canvas Background */
@@ -83,57 +120,62 @@ html {
 
 /* Glassmorphism Panels */
 .glass-panel {
-    background: rgba(20, 20, 20, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 3rem;
-    border-radius: 24px;
-    max-width: 800px;
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.5) 0%, rgba(5, 5, 5, 0.7) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    padding: 3.5rem;
+    border-radius: 32px;
+    max-width: 850px;
     text-align: center;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     opacity: 0;
-    transform: translateY(40px);
-    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateY(50px) scale(0.97);
+    transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-panel:hover {
+    border-color: rgba(230, 126, 34, 0.2);
+    box-shadow: 0 20px 45px 0 rgba(0, 0, 0, 0.8), inset 0 0 60px rgba(230, 126, 34, 0.05);
 }
 
 .glass-panel.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 /* Thematic Color Highlights (Earth, Excavation vibes) */
 .glass-panel.dark {
-    background: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(145deg, rgba(15, 15, 15, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%);
     border-top: 3px solid #7f8c8d;
 }
 
 .glass-panel.primary {
-    background: rgba(30, 20, 10, 0.6);
+    background: linear-gradient(145deg, rgba(40, 20, 5, 0.6) 0%, rgba(15, 5, 0, 0.8) 100%);
     border-top: 3px solid #e67e22;
 }
 
 .glass-panel.info {
-    background: rgba(50, 40, 20, 0.5);
+    background: linear-gradient(145deg, rgba(50, 40, 10, 0.5) 0%, rgba(20, 15, 0, 0.8) 100%);
     border-top: 3px solid #f1c40f;
 }
 
 .glass-panel.accent {
-    background: rgba(20, 20, 20, 0.7);
-    border: 2px solid #e67e22;
-    box-shadow: 0 0 30px rgba(230, 126, 34, 0.3);
+    background: linear-gradient(145deg, rgba(30, 20, 10, 0.8) 0%, rgba(10, 5, 0, 0.95) 100%);
+    border: 1px solid #e67e22;
+    box-shadow: 0 0 40px rgba(230, 126, 34, 0.2), inset 0 0 20px rgba(230, 126, 34, 0.1);
 }
 
 /* Typography */
 h1 {
-    font-size: 6rem;
+    font-size: 6.5rem;
     font-weight: 900;
     margin-bottom: 0.5rem;
     color: #ffffff;
     text-transform: uppercase;
-    letter-spacing: -2px;
-    line-height: 1.1;
-    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    letter-spacing: -3px;
+    line-height: 1.05;
+    text-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
 }
 
 h1 .highlight {
@@ -145,52 +187,55 @@ h1 .highlight {
 }
 
 .subtitle {
-    font-size: 1.6rem;
-    font-weight: 500;
-    letter-spacing: 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 2rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    color: #f39c12;
+    margin-bottom: 2.5rem;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
 }
 
 h2 {
-    font-size: 3.2rem;
+    font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
     color: #ffffff;
-    line-height: 1.2;
-    letter-spacing: -1px;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
 }
 
 p {
-    font-size: 1.35rem;
-    font-weight: 400;
-    line-height: 1.8;
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 1.9;
     color: rgba(255, 255, 255, 0.85);
 }
 
 p strong {
     font-weight: 700;
     color: #ffffff;
-    background: linear-gradient(180deg, transparent 65%, rgba(230, 126, 34, 0.5) 65%);
+    background: linear-gradient(120deg, transparent 60%, rgba(230, 126, 34, 0.6) 60%);
     display: inline;
+    padding: 0 0.2rem;
 }
 
 .badge {
-    display: inline-block;
-    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    padding: 0.5rem 1.2rem;
-    background: rgba(255, 255, 255, 0.05);
+    letter-spacing: 4px;
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(90deg, rgba(230, 126, 34, 0.1), rgba(241, 196, 15, 0.1));
     color: #f1c40f;
     border-radius: 50px;
-    margin-bottom: 1.5rem;
-    border: 1px solid rgba(241, 196, 15, 0.3);
-    backdrop-filter: blur(4px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(241, 196, 15, 0.4);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Scroll Indication */
@@ -221,71 +266,204 @@ p strong {
     }
 }
 
-/* Call to Action - Contact Button */
-.phone-button {
+/* Contact Buttons in Section */
+.contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 480px) {
+    .contact-buttons {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+}
+
+.action-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    margin-top: 2rem;
     padding: 1.5rem 3rem;
     font-size: 2rem;
     font-weight: 700;
     color: #fff;
-    background: linear-gradient(90deg, #d35400, #e67e22);
     border-radius: 50px;
     text-decoration: none;
-    box-shadow: 0 10px 20px rgba(230, 126, 34, 0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.phone-button:hover {
+.action-button.call-action {
+    background: linear-gradient(90deg, #d35400, #e67e22);
+    box-shadow: 0 10px 20px rgba(230, 126, 34, 0.4);
+}
+
+.action-button.whatsapp-action {
+    background: linear-gradient(90deg, #128C7E, #25D366);
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
+}
+
+.action-button:hover {
     transform: translateY(-5px) scale(1.05);
+}
+
+.action-button.call-action:hover {
     box-shadow: 0 15px 30px rgba(230, 126, 34, 0.6);
 }
 
-.phone-button:active {
+.action-button.whatsapp-action:hover {
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.6);
+}
+
+.action-button:active {
     transform: translateY(0);
 }
 
 /* Responsiveness */
 @media (max-width: 768px) {
     h1 {
-        font-size: 4rem;
+        font-size: 3.2rem;
         letter-spacing: -1px;
     }
 
     .subtitle {
-        font-size: 1rem;
-        letter-spacing: 3px;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
     }
 
     h2 {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
         letter-spacing: -0.5px;
+        margin-bottom: 1rem;
     }
 
     p {
-        font-size: 1.15rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
     }
 
     .badge {
         font-size: 0.75rem;
         padding: 0.4rem 1rem;
+        margin-bottom: 1rem;
     }
 
     .glass-panel {
-        padding: 2rem;
-        margin: 1rem;
+        padding: 1.5rem;
+        margin: 0.5rem;
+        border-radius: 20px;
     }
 
     .overlay-section {
         height: 120vh;
+        padding: 1rem;
     }
 
-    .phone-button {
-        font-size: 1.5rem;
-        padding: 1rem 2rem;
+    .action-button {
+        font-size: 1.25rem;
+        padding: 1rem 1.5rem;
+        width: 100%;
+        gap: 0.5rem;
+    }
+}
+
+/* Services List */
+.services-list {
+    text-align: left;
+    margin-top: 1.5rem;
+    padding-left: 0;
+    list-style: none;
+}
+
+.services-list li {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    position: relative;
+    padding-left: 2rem;
+}
+
+.services-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #e67e22;
+    font-weight: 900;
+}
+
+.services-list li strong {
+    color: #f1c40f;
+    background: none;
+}
+
+/* Floating Action Buttons */
+.floating-actions {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.floating-btn {
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-btn.call-btn {
+    background: linear-gradient(135deg, #d35400, #e67e22);
+    animation: pulse-glow-call 2s infinite;
+}
+
+.floating-btn.whatsapp-btn {
+    background: linear-gradient(135deg, #128C7E, #25D366);
+}
+
+.floating-btn:hover {
+    transform: translateY(-5px);
+}
+
+.floating-btn.call-btn:hover {
+    box-shadow: 0 10px 25px rgba(230, 126, 34, 0.7);
+}
+
+.floating-btn.whatsapp-btn:hover {
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.7);
+}
+
+.floating-btn .icon {
+    font-size: 1.5rem;
+}
+
+@keyframes pulse-glow-call {
+    0% {
+        box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(230, 126, 34, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(230, 126, 34, 0);
     }
 }
 
@@ -324,5 +502,31 @@ p strong {
 
     .site-footer p {
         font-size: 0.75rem;
+    }
+
+    .floating-actions {
+        bottom: 15px;
+        right: 15px;
+        gap: 10px;
+    }
+
+    .floating-btn {
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+    }
+
+    .floating-btn .icon {
+        font-size: 1.25rem;
+    }
+
+    .services-list {
+        margin-top: 1rem;
+    }
+
+    .services-list li {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 0.8rem;
+        padding-left: 1.5rem;
     }
 }
